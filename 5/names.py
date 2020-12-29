@@ -14,7 +14,6 @@ NAMES = [
     "brad pitt",
 ]
 
-
 def dedup_and_title_case_names(names):
     """Should return a list of title cased names,
     each name appears only once"""
