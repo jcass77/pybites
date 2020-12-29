@@ -24,7 +24,7 @@ def dedup_and_title_case_names(names):
 def sort_by_surname_desc(names):
     """Returns names list sorted desc by surname"""
     names = dedup_and_title_case_names(names)
-    return sorted(names, key=lambda n: n.split(" ")[1], reverse=True)
+    return sorted(names, key=lambda n: n.split()[-1], reverse=True)
 
 
 def shortest_first_name(names):
@@ -32,4 +32,4 @@ def shortest_first_name(names):
     You can assume there is only one shortest name.
     """
     names = dedup_and_title_case_names(names)
-    return sorted((n.split(" ")[0] for n in names), key=len)[0]
+    return min((n.split()[0] for n in names), key=len)
