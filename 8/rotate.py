@@ -5,7 +5,7 @@ def rotate(string, n):
     """Rotate characters in a string.
        Expects string and n (int) for number of characters to move.
     """
-    string = deque(string)
-    string.rotate(n * -1)
+    deq = deque(string)
+    deq.rotate(-n)
 
-    return "".join(string)
+    return "".join(deq)
