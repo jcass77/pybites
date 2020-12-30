@@ -20,11 +20,11 @@ def slice_and_dice(text: str = text) -> list:
     """Get a list of words from the passed in text.
     See the Bite description for step by step instructions"""
     results = []
-    lines = text.strip().split("\n")
-    for line in lines:
+    for line in text.strip().splitlines():
         line = line.lstrip()
+
         if line and line[0].islower():
-            word = line.split()[-1]
-            results.append(word.rstrip(".!"))
+            last_word = line.split()[-1]
+            results.append(last_word.rstrip(".!"))
 
     return results
