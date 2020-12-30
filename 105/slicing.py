@@ -1,5 +1,3 @@
-from string import ascii_lowercase
-
 text = """
 One really nice feature of Python is polymorphism: using the same operation
 on different types of objects.
