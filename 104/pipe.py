@@ -8,5 +8,5 @@ Become a PyBites ninja!"""
 def split_in_columns(message=message):
     """Split the message by newline (\n) and join it together on '|'
     (pipe), return the obtained output string"""
-    words = message.split("\n")
-    return "|".join(words)
+    lines = message.split("\n")
+    return "|".join(lines)
