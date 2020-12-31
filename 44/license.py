@@ -1,15 +1,11 @@
-import secrets
-import string
+from secrets import choice
+from string import ascii_uppercase, digits
+
+ALPHABET = ascii_uppercase + digits
+DASH = "-"
 
 
-def gen_key(parts: int = 4, chars_per_part: int = 8):
-    choices = string.ascii_uppercase + string.digits
-
-    secret_parts = []
-
-    for part in range(parts):
-        secret_parts.append(
-            "".join(secrets.choice(choices) for _ in range(chars_per_part))
-        )
-
-    return "-".join(["{}"] * parts).format(*secret_parts)
+def gen_key(parts=4, chars_per_part=8):
+    return DASH.join(
+        "".join(choice(ALPHABET) for _ in range(chars_per_part)) for _ in range(parts)
+    )
