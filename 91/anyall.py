@@ -1,3 +1,4 @@
+import re
 import string
 
 VOWELS = "aeiou"
@@ -13,10 +14,10 @@ def contains_only_vowels(input_str):
 def contains_any_py_chars(input_str):
     """Receives input string and checks if any of the PYTHON
     chars are in it. Match is case insensitive."""
-    return any(c in PYTHON for c in input_str.lower())
+    return re.search(f"[{PYTHON}]", input_str, flags=re.IGNORECASE)
 
 
 def contains_digits(input_str):
     """Receives input string and checks if it contains
     one or more digits."""
-    return any(c in string.digits for c in input_str)
+    return re.search(r"\d+", input_str)
