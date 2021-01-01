@@ -1,5 +1,3 @@
 def generate_affiliation_link(url):
-    parsed_path = url.split("/")
-    dp = parsed_path[parsed_path.index("dp") + 1]
-
-    return f"http://www.amazon.com/dp/{dp}/?tag=pyb0f-20"
+    asin = url.split("dp/")[-1].split("/")[0]
+    return f"http://www.amazon.com/dp/{asin}/?tag=pyb0f-20"
