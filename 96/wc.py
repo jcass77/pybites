@@ -1,7 +1,3 @@
-import re
-import string
-
-
 def wc(file_):
     """Takes an absolute file path/name, calculates the number of
     lines/words/chars, and returns a string of these numbers + file, e.g.:
@@ -10,12 +6,11 @@ def wc(file_):
     num_words = num_chars = 0
 
     with open(file_) as f:
-        lines = f.readlines()
-        num_lines = len(lines)
+        content = f.read()
 
-        for line in lines:
-            num_words += len(line.split())
-            num_chars += len(line)
+        num_lines = len(content.splitlines())
+        num_words = len(content.split())
+        num_chars = len(content)
 
     return f"{num_lines} {num_words} {num_chars} {file_}"
 

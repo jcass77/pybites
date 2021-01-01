@@ -1,4 +1,3 @@
-import timeit
 from urllib.request import urlretrieve
 
 import pytest
