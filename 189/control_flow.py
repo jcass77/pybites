@@ -7,15 +7,12 @@ MAX_NAMES = 5
 
 
 def filter_names(names: List[str]):
-    result = []
-    ignore_or_digit = re.compile(f"^[{IGNORE_CHAR}]|[0-9]+", flags=re.IGNORECASE)
+    matches = re.compile(f"^[{IGNORE_CHAR}]|[0-9]+", flags=re.IGNORECASE)
 
-    for i, name in enumerate(
-        (name for name in names if not ignore_or_digit.search(name))
+    for count, name in enumerate(
+        filter(lambda name: matches.search(name) is None, names)
     ):
-        if i == MAX_NAMES or name.startswith(QUIT_CHAR):
+        if count == MAX_NAMES or name.startswith(QUIT_CHAR):
             break
 
-        result.append(name)
-
-    return result
+        yield name
