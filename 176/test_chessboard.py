@@ -4,11 +4,16 @@ import pytest
 
 from chessboard import create_chessboard
 
-sizes = [2, 4, 8, 16, 32]
+sizes = [2, 3, 4, 8, 16, 32]
 outputs = [
     """
      #
     # 
+    """,
+    """
+     # 
+    # #
+     # 
     """,
     """
      # #
