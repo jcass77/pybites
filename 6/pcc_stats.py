@@ -5,7 +5,6 @@ import urllib.request
 
 # prep
 from distutils.util import strtobool
-from itertools import tee
 
 tmp = os.getenv("TMP", "/tmp")
 tempfile = os.path.join(tmp, "dirnames")
@@ -55,24 +54,25 @@ def diehard_pybites(files=None):
 
     Stats(user='clamytoe', challenge=('01', 7))
     """
-    d1, d2 = tee(gen_data(files=files), 2)
-    top_user = Counter(user for user, _ in d1).most_common(1)[0][0]
-    top_challenge = Counter(challenge for _, challenge in d2).most_common(1)[0]
-
-    return Stats(top_user, top_challenge)
-
-
-def gen_data(files=None):
     if files is None:
         files = gen_files()
 
-    for line in files:
-        challenge, user = line.split("/")
+    users = Counter()
+    popular_challenges = Counter()
+
+    for dir_ in files:
+        challenge, user = dir_.split("/")
 
         if ignore_user(user):
             continue
 
-        yield user, challenge
+        users[user] += 1
+        popular_challenges[challenge] += 1
+
+    top_user = users.most_common(1)[0][0]
+    top_challenge = popular_challenges.most_common(1)[0]
+
+    return Stats(top_user, top_challenge)
 
 
 def ignore_user(user):
