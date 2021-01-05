@@ -16,7 +16,7 @@ with open(tempfile) as f:
 def get_pybites_top_tags(n=10):
     """use Counter to get the top 10 PyBites tags from the feed
     data already loaded into the content variable"""
-    tree = ET.parse("/tmp/feed")
-    categories = [e.text.lower() for e in tree.findall(".//category")]
+    tree = ET.fromstring(content)
+    categories = (e.text for e in tree.findall("./channel/item/category"))
 
     return Counter(categories).most_common(n)
