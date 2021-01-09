@@ -1,9 +1,7 @@
 from collections import namedtuple
 from datetime import datetime
 import json
-from json import JSONEncoder, JSONDecoder
-from json.decoder import WHITESPACE
-from typing import MutableMapping, Any, Callable
+from typing import MutableMapping
 
 blog = dict(
     name="PyBites",
@@ -18,26 +16,9 @@ blog = dict(
 Blog = namedtuple("blog", blog.keys())
 
 
-class BlogEncoder(JSONEncoder):
-    def encode(self, o: Any) -> str:
-        dict_ = o._asdict()
-        dict_["started"] = o.started.isoformat()
-
-        return super().encode(dict_)
-
-
-class BlogDecoder(JSONDecoder):
-    def decode(self, s: str, _w: Callable[..., Any] = WHITESPACE.match) -> Any:
-        o = super().decode(s, _w=_w)
-        o["founders"] = tuple(o["founders"])
-        o["started"] = datetime.fromisoformat(o["started"])
-
-        return Blog._make(o.values())
-
-
 def dict2nt(dict_: MutableMapping):
-    return Blog._make(dict_.values())
+    return Blog(**dict_)
 
 
 def nt2json(nt: namedtuple):
-    return json.dumps(nt, cls=BlogEncoder)
+    return json.dumps(nt._asdict(), default=str)
