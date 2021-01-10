@@ -2,7 +2,6 @@ import os
 import string
 import urllib.request
 
-# data provided
 from collections import Counter
 
 tmp = os.getenv("TMP", "/tmp")
@@ -22,9 +21,8 @@ def get_harry_most_common_word():
         stopwords = {line.strip().lower() for line in f}
 
     with open(harry_text) as f:
-        words = (word.lower().strip(string.punctuation) for word in f.read().split())
+        words = (word.strip(string.punctuation) for word in f.read().lower().split())
+        words = (word for word in words if word and word not in stopwords)
 
-    count = Counter(
-        filter(lambda word: word not in stopwords and word.isalpha(), words)
-    )
+    count = Counter(words)
     return count.most_common(1)[0]
