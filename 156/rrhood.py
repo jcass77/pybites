@@ -1,6 +1,4 @@
 import re
-import string
-from collections import defaultdict
 
 CHARACTERS = [
     "Red Riding Hood",
@@ -51,7 +49,7 @@ Little Red Riding Hood and her Grandmother had a nice lunch and a long chat.
 """
 
 
-def make_character_index(text=text, characters=CHARACTERS):
+def make_character_index(text: str = text, characters: list = CHARACTERS):
     """Return a dict with keys are characters (lowercased) and values
     the lines they appear in sorted order.
     Matches should be case insensitive.
@@ -59,15 +57,20 @@ def make_character_index(text=text, characters=CHARACTERS):
     - e.g. ('Grandmother', 'Grandma', 'Granny') -
     then return the former as key.
     """
-    index = defaultdict(set)
+    numbered_text = "\n".join(
+        f"{i}: {line}" for i, line in enumerate(text.splitlines())
+    )
 
-    for no, line in enumerate(text.lower().splitlines()):
-        for character in characters:
-            try:
-                if re.search(character, line, flags=re.IGNORECASE):
-                    index[character].add(no)
-            except TypeError:
-                if re.search("|".join(character), line, flags=re.IGNORECASE):
-                    index[character[0]].add(no)
+    index = {}
+    regex = r"(\d+):.*(?:{}).*"
+    for character in characters:
+        if type(character) is tuple:
+            pattern = regex.format("|".join(character))
+            character = character[0]
+        else:
+            pattern = regex.format(character)
 
-    return {character.lower(): sorted(pages) for character, pages in index.items()}
+        matches = re.findall(pattern, numbered_text, flags=re.IGNORECASE)
+        index[character.lower()] = sorted(int(line_no) for line_no in matches)
+
+    return index
