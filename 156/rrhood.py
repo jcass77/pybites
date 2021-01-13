@@ -62,15 +62,10 @@ def make_character_index(text: str = text, characters: list = CHARACTERS):
     )
 
     index = {}
-    regex = r"(\d+):.*(?:{}).*"
-    for character in characters:
-        if type(character) is tuple:
-            pattern = regex.format("|".join(character))
-            character = character[0]
-        else:
-            pattern = regex.format(character)
 
-        matches = re.findall(pattern, numbered_text, flags=re.IGNORECASE)
-        index[character.lower()] = sorted(int(line_no) for line_no in matches)
+    for character in characters:
+        names = [character] if type(character) is str else character
+        matches = re.findall(r"(\d+):.*(?:{}).*".format("|".join(names)), numbered_text, flags=re.IGNORECASE)
+        index[names[0].lower()] = sorted(int(line_no) for line_no in matches)
 
     return index
