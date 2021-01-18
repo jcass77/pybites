@@ -38,10 +38,9 @@ def group_cars_by_manufacturer(cars):
     No return here, just print to the console. We use pytest > capfd to
     validate your output :)
     """
-    for manufacturer, models in itertools.groupby(
-        sorted(cars, key=itemgetter(0)), key=itemgetter(0)
-    ):
-        print(f"{manufacturer.upper()}")
+    cars.sort()
+    for manufacturer, models in itertools.groupby(cars, key=itemgetter(0)):
+        print(manufacturer.upper())
         for model in models:
             print(f"- {model[1]}")
-        print("")
+        print()
