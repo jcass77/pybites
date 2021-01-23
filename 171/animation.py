@@ -10,11 +10,11 @@ def spinner(seconds):
     """Make a terminal loader/spinner animation using the imports above.
     Takes seconds argument = time for the spinner to run.
     Does not return anything, only prints to stdout."""
-    state = cycle(SPINNER_STATES)
+    symbols = cycle(SPINNER_STATES)
     end_time = time() + seconds
 
     while time() < end_time:
-        sys.stdout.write(f"{next(state)}\r")
+        sys.stdout.write(f"{next(symbols)}\r")
         sleep(STATE_TRANSITION_TIME)
 
 
