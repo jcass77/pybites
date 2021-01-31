@@ -13,6 +13,7 @@ Keywords: enum, exception handling, multi type input
 
 from enum import Enum
 from functools import singledispatch
+from typing import Union, Any
 
 
 class Bloodtype(Enum):
@@ -39,8 +40,7 @@ blood_type_text = {
 
 
 # complete :
-@singledispatch
-def check_bt(donor, recipient):
+def check_bt(donor: Union[int, str, Bloodtype], recipient: Union[int, str, Bloodtype]):
     """Checks red blood cell compatibility based on pybites_bite8 blood types
     Args:
     donor (int | str | Bloodtype): red blood cell type of the donor
@@ -48,7 +48,37 @@ def check_bt(donor, recipient):
     Returns:
     bool: True for compatability, False otherwise.
     """
-    pass
+    compatibility = _particular_antigen_comp(
+        get_blood_type_as_int(donor), get_blood_type_as_int(recipient)
+    )
+    return all(a >= 0 for a in compatibility)
+
+
+@singledispatch
+def get_blood_type_as_int(blood_type: Any):
+    # No suitable handler found for this type.
+    raise TypeError
+
+
+@get_blood_type_as_int.register
+def _(blood_type: Bloodtype):
+    return blood_type.value
+
+
+@get_blood_type_as_int.register
+def _(blood_type: int):
+    try:
+        return Bloodtype(blood_type).value
+    except KeyError:
+        raise ValueError
+
+
+@get_blood_type_as_int.register
+def _(blood_type: str):
+    try:
+        return blood_type_text[blood_type].value
+    except KeyError:
+        raise ValueError
 
 
 # hint
