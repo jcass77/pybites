@@ -1,4 +1,4 @@
-from decimal import ROUND_CEILING, Decimal, ROUND_FLOOR
+import math
 
 
 def round_up_or_down(transactions, up=True):
@@ -6,5 +6,5 @@ def round_up_or_down(transactions, up=True):
     If up=True (default) round up, else round down.
     Return a new list of rounded values
     """
-    r = ROUND_CEILING if up else ROUND_FLOOR
-    return [Decimal(f).quantize(1, rounding=r) for f in transactions]
+    func = math.ceil if up else math.floor
+    return [func(t) for t in transactions]
