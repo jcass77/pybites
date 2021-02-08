@@ -43,10 +43,7 @@ def get_users_for_shell(
     """Match the passwd_output string for users with grep_shell.
     Return a list of users.
     """
-    return [
-        match
-        for match in re.findall(r"(.*?[^:]):.*\/{}".format(grep_shell), passwd_output)
-    ]
+    return re.findall(rf"(.*?[^:]):.*\/{grep_shell}", passwd_output)
 
     # return [
     #     line.split(":", maxsplit=1)[0]
