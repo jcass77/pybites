@@ -1,4 +1,4 @@
-FORMATS = {"cm": 2.54, "in": 0.393_700_787_4}
+FORMATS = {"cm": 2.54, "in": 1/2.54}
 
 
 def convert(value: float, fmt: str) -> float:
@@ -15,5 +15,5 @@ def convert(value: float, fmt: str) -> float:
 
     try:
         return round(value * FORMATS[fmt], 4)
-    except TypeError as e:
+    except TypeError:
         raise TypeError(f"Expected '{value}' to be either a float or an int!")
