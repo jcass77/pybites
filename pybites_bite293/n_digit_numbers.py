@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import List, TypeVar
 
 T = TypeVar("T", int, float)
@@ -9,12 +10,12 @@ def n_digit_numbers(numbers: List[T], n: int) -> List[int]:
 
     result = []
     for number in numbers:
-        if number >= 0:
-            str_len = n
-        else:
-            str_len = n + 1
+        sign, digits, _ = Decimal(number).normalize().as_tuple()
+        sign = "-" if sign else ""
+        digits = ''.join(str(d) for d in digits)
+        exponent = n - len(digits)
 
-        num_string = str(number).replace(".", "").ljust(str_len, "0")[:str_len]
-        result.append(int(num_string))
+        d = Decimal(f"{sign}{digits}e{exponent}")
+        result.append(int(d))
 
     return result
