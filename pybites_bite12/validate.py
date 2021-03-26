@@ -23,11 +23,22 @@ class UserNoPermission(Exception):
     pass
 
 
-def get_secret_token(username: str) -> str:
-    for user in USERS:
-        if user.name == username:
-            break
-    else:
+def init_get_user():
+    users = {user.name: user for user in USERS}
+
+    def _get_user(username):
+        return users.get(username)
+
+    return _get_user
+
+
+get_user = init_get_user()
+
+
+def get_secret_token(username):
+    user = get_user(username)
+
+    if not user:
         raise UserDoesNotExist
 
     if user.expired:
