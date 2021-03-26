@@ -1,4 +1,12 @@
-from decorators import make_html
+from decorators import make_strong, make_html
+
+
+def test_make_strong():
+    @make_strong
+    def get_text(text="I code with PyBites"):
+        return text
+
+    assert get_text() == "<strong>I code with PyBites</strong>"
 
 
 def test_make_html():
