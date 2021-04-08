@@ -19,6 +19,7 @@ def _get_lines(log):
 
 
 def create_chart(log=None):
+    log = log or SAFARI_LOGS
     line_gen1, line_gen2 = itertools.tee(_get_lines(log), 2)
 
     posts = defaultdict(list)
