@@ -1,6 +1,7 @@
+import itertools
+from collections import defaultdict
 import os
 import urllib.request
-from collections import defaultdict
 
 TMP = os.getenv("TMP", "/tmp")
 DATA = "safari.logs"
@@ -12,27 +13,23 @@ urllib.request.urlretrieve(
 )
 
 
-def create_chart():
-    prev_line = ""
-    prev_date = ""
-    printed_date = ""
+def _get_lines(log):
+    with open(log) as f:
+        yield from f.readlines()
 
-    with open(SAFARI_LOGS) as f:
-        for line in f.readlines():
-            date = line.split(maxsplit=1)[0]
-            if date != prev_date:
-                # New date section
-                prev_date = date
 
-            elif "sending to slack channel" in line:
-                if printed_date != date:
-                    # Start a new line
-                    print(f"\n {date} ", end="")
-                    printed_date = date
+def create_chart(log=None):
+    line_gen1, line_gen2 = itertools.tee(_get_lines(log), 2)
 
-                if "python" in prev_line.lower():
-                    print(PY_BOOK, end="")
-                else:
-                    print(OTHER_BOOK, end="")
+    posts = defaultdict(list)
 
-            prev_line = line
+    for prev_line, line in zip(
+        itertools.islice(line_gen1, 0, None, 1), itertools.islice(line_gen2, 1, None, 1)
+    ):
+        if "sending to" in line:
+            date = prev_line.split()[0]
+            book_icon = PY_BOOK if "python" in prev_line.lower() else OTHER_BOOK
+            posts[date].append(book_icon)
+
+    for date, books in posts.items():
+        print(date, "".join(books))
